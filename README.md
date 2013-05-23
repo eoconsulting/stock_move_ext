@@ -4,6 +4,8 @@ Stock Move Allow Edit
 Stock Move Extension features:
 
  * Allow users to delete stock move when state != draft.
+ * Fix the update of min/max date and expected date in
+   calendar view of Stock Picking
  * Currently in development ...
 
 Only tested with *OpenERP v6.1*.

@@ -22,7 +22,7 @@
 ##############################################################################
 
 
-from osv import osv
+from osv import fields, osv
 
 class stock_move(osv.osv):
     _inherit = 'stock.move'
@@ -38,3 +38,62 @@ class stock_move(osv.osv):
         return osv.osv.unlink(self, cr, uid, ids, context=ctx)
 
 stock_move()
+
+class stock_picking(osv.osv):
+    _inherit = 'stock.picking'
+
+    def _set_maximum_date(self, cr, uid, ids, name, value, arg, context=None):
+        """ Calculates planned date if it is greater than 'value'.
+        @param name: Name of field
+        @param value: Value of field
+        @param arg: User defined argument
+        @return: True or False
+        """
+        if not value:
+            return False
+        if isinstance(ids, (int, long)):
+            ids = [ids]
+        for pick in self.browse(cr, uid, ids, context=context):
+            sql_str = """update stock_move set
+                    date='%(date)s', date_expected='%(date)s'
+                where
+                    picking_id=%(pick_id)d """ % {'date': value, 'pick_id': pick.id}
+
+            if pick.max_date:
+                sql_str += " and (date='" + pick.max_date + "' or date>'" + value + "' or date_expected>'" + value + "')"
+            cr.execute(sql_str)
+        return True
+
+    def _set_minimum_date(self, cr, uid, ids, name, value, arg, context=None):
+        """ Calculates planned date if it is less than 'value'.
+        @param name: Name of field
+        @param value: Value of field
+        @param arg: User defined argument
+        @return: True or False
+        """
+        if not value:
+            return False
+        if isinstance(ids, (int, long)):
+            ids = [ids]
+        for pick in self.browse(cr, uid, ids, context=context):
+            sql_str = """update stock_move set
+                    date='%(date)s', date_expected='%(date)s'
+                where
+                    picking_id=%(pick_id)d """ % {'date': value, 'pick_id': pick.id}
+            if pick.min_date:
+                sql_str += " and (date='" + pick.min_date + "' or date<'" + value + "' or date_expected<'" + value + "')"
+            cr.execute(sql_str)
+        return True
+
+    def get_min_max_date(self, cr, uid, ids, field_name, arg, context=None):
+        return super(stock_picking,self).get_min_max_date(cr, uid, ids, field_name, arg, context)
+
+    # Override the min/max dates function fields
+    _columns = {
+        'min_date': fields.function(get_min_max_date, fnct_inv=_set_minimum_date, multi="min_max_date",
+                 store=True, type='datetime', string='Expected Date', select=1, help="Expected date for the picking to be processed"),
+        'max_date': fields.function(get_min_max_date, fnct_inv=_set_maximum_date, multi="min_max_date",
+                 store=True, type='datetime', string='Max. Expected Date', select=2),
+    }
+
+stock_picking()

@@ -26,6 +26,8 @@
     "description":"""
 Stock Move Extension features:
  * Allow users to delete stock move when state != draft.
+ * Fix the update of min/max date and expected date in
+   calendar view of Stock Picking
 """,
     "version" : "0.1",
     "author" : "Enterprise Objects Consulting",
