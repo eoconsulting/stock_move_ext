@@ -24,10 +24,16 @@
 {
     "name" : "Stock Move Ext",
     "description":"""
-Stock Move Extension features:
+Improve the Stock Picking and Stock Move features. 
+
+Enhancements:
+
  * Allow users to delete stock move when state != draft.
  * Fix the update of min/max date and expected date in
    calendar view of Stock Picking
+ * Better message exceptions
+ * Better translation to Spanish (es) and Spanish (AR)
+ * Currently in development ...
 """,
     "version" : "0.1",
     "author" : "Enterprise Objects Consulting",

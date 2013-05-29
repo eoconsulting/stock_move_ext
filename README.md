@@ -1,7 +1,9 @@
-Stock Move Allow Edit
-=====================
+Stock Move Extension
+====================
 
-Stock Move Extension features:
+This OpenERP module improve the Stock Picking and Stock Move features. 
+
+Enhancements:
 
  * Allow users to delete stock move when state != draft.
  * Fix the update of min/max date and expected date in
