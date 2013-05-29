@@ -23,6 +23,7 @@
 
 
 from osv import fields, osv
+from tools.translate import _
 
 class stock_move(osv.osv):
     _inherit = 'stock.move'
@@ -95,5 +96,18 @@ class stock_picking(osv.osv):
         'max_date': fields.function(get_min_max_date, fnct_inv=_set_maximum_date, multi="min_max_date",
                  store=True, type='datetime', string='Max. Expected Date', select=2),
     }
+
+    def action_assign(self, cr, uid, ids, *args):
+        """ Changes state of picking to available if all moves are confirmed.
+        @return: True
+        """
+        for pick in self.browse(cr, uid, ids):
+            move_ids = [x.id for x in pick.move_lines if x.state == 'confirmed']
+            if not move_ids:
+                raise osv.except_osv(_('Warning !'), \
+                    _('Not enough stock, unable to reserve the products.\n' \
+                      'Check if all moves in this order are in Confirmed or Available state.'))
+            self.pool.get('stock.move').action_assign(cr, uid, move_ids)
+        return True
 
 stock_picking()
