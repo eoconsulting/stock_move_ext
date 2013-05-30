@@ -97,6 +97,10 @@ class stock_picking(osv.osv):
                  store=True, type='datetime', string='Max. Expected Date', select=2),
     }
 
+    _defaults = {
+        'move_type': lambda s,c,u,ctx: s.pool.get('sale.order').default_get(c,u,['picking_policy'],context=ctx)['picking_policy']
+    }
+
     def action_assign(self, cr, uid, ids, *args):
         """ Changes state of picking to available if all moves are confirmed.
         @return: True

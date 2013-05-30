@@ -9,6 +9,8 @@ Enhancements:
  * Fix the update of min/max date and expected date in
    calendar view of Stock Picking
  * Better message exceptions
+ * Take default "Delivery Method" from default "Picking Policy" in
+   Sale Order (configurable by "Setup Picking Policy" wizard)
  * Better translation to Spanish (es) and Spanish (AR)
  * Currently in development ...
 
