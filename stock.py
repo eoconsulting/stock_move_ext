@@ -38,6 +38,28 @@ class stock_move(osv.osv):
                         _('You can only delete draft moves.'))
         return osv.osv.unlink(self, cr, uid, ids, context=ctx)
 
+    def onchange_product_id(self, cr, uid, ids, prod_id=False, loc_id=False,
+                            loc_dest_id=False, address_id=False):
+        result = super(stock_move,self).onchange_product_id(cr, uid, ids, prod_id, loc_id, loc_dest_id, address_id)
+        if result == {} or 'name' in result['value']:
+            return result
+        ctx = {'lang': self._get_lang(cr, uid, address_id)}
+        product = self.pool.get('product.product').browse(cr, uid, [prod_id], context=ctx)[0]
+        product_name = ''
+        if product.default_code:
+            product_name += '[' + product.default_code + '] '
+        product_name += product.name
+        result['value']['name'] = product_name
+        return result
+
+    def _get_lang(self, cr, uid, address_id):
+        lang = False
+        if address_id:
+            addr_rec = self.pool.get('res.partner.address').browse(cr, uid, address_id)
+            if addr_rec:
+                lang = addr_rec.partner_id and addr_rec.partner_id.lang or False
+        return lang
+
 stock_move()
 
 class stock_picking(osv.osv):
@@ -113,5 +135,14 @@ class stock_picking(osv.osv):
                       'Check if all moves in this order are in Confirmed or Available state.'))
             self.pool.get('stock.move').action_assign(cr, uid, move_ids)
         return True
+
+    def action_invoice_create(self, cr, uid, ids, journal_id=False,
+            group=False, type='out_invoice', context=None):
+        if not isinstance(ids, list):
+            ids = [ids]
+        if len(ids)==1 and group==True:
+            # To prevent invoice line with **[OUT CODE]-**Product description
+            group=False
+        return super(stock_picking,self).action_invoice_create(cr, uid, ids, journal_id, group, type, context)
 
 stock_picking()

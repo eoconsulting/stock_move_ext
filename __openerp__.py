@@ -31,13 +31,15 @@ Enhancements:
  * Allow users to delete stock move when state != draft.
  * Fix the update of min/max date and expected date in
    calendar view of Stock Picking
+ * Fix when a product is changed in a stock move, the
+   description is updated too
  * Better message exceptions
  * Take default "Delivery Method" in Picking from default "Picking Policy"
    (configurable by "Setup Picking Policy" wizard)
  * Better translation to Spanish (es) and Spanish (AR)
  * Currently in development ...
 """,
-    "version" : "0.1",
+    "version" : "0.2",
     "author" : "Enterprise Objects Consulting",
     "website" : "http://www.eoconsulting.com.ar",
     "category" : "Warehouse Management",
