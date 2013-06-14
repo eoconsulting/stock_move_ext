@@ -14,6 +14,7 @@ Enhancements:
  * Take default "Delivery Method" in Picking from default "Picking Policy"
    (configurable by "Setup Picking Policy" wizard)
  * Better translation to Spanish (es) and Spanish (AR)
+ * Override order by Order Date (desc) in list view
  * Currently in development ...
 
 Only tested with *OpenERP v6.1*.

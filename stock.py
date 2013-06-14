@@ -111,6 +111,9 @@ class stock_picking(osv.osv):
     def get_min_max_date(self, cr, uid, ids, field_name, arg, context=None):
         return super(stock_picking,self).get_min_max_date(cr, uid, ids, field_name, arg, context)
 
+    # Override order by Order Date (desc) in list view
+    _order = 'date desc, id'
+
     # Override the min/max dates function fields
     _columns = {
         'min_date': fields.function(get_min_max_date, fnct_inv=_set_minimum_date, multi="min_max_date",
