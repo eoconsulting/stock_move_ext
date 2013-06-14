@@ -38,9 +38,11 @@ Enhancements:
    (configurable by "Setup Picking Policy" wizard)
  * Better translation to Spanish (es) and Spanish (AR)
  * Override order by Order Date (desc) in list view
+ * In real time stock valuation, remove the partner in the journal items,
+   preventing noise in the partner customer credit / supplier debit.
  * Currently in development ...
 """,
-    "version" : "0.2",
+    "version" : "0.3",
     "author" : "Enterprise Objects Consulting",
     "website" : "http://www.eoconsulting.com.ar",
     "category" : "Warehouse Management",
