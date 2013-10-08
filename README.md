@@ -1,6 +1,8 @@
 Stock Move Extension
 ====================
 
+**This project has been moved to https://launchpad.net/~eoc**
+
 This OpenERP module improve the Stock Picking and Stock Move features. 
 
 Enhancements:
